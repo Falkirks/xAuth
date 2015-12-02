@@ -2,7 +2,7 @@ name: xAuth
 author: xFlare
 main: xFlare\xAuth\Loader
 version: "1.0.0"
-api: [1.8.0]
+api: [1.9.0]
 description: xAuth protects your server and adds authentication.
 commands:
     login:
