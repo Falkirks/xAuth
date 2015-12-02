@@ -186,12 +186,14 @@ class Loader extends PluginBase implements Listener{
       $this->getServer()->getLogger()->info("§7[§axAuth-Debug§7] §3Config options have been registered.");
     }
     if($this->import){
-    	$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Import enabled, SimpleAuth data will be used now.");
+    //	$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Import enabled, SimpleAuth data will be used now."); Not implemnted.
     }
   }
   private function configUpdate(){
   	array_push($this->mysettings, $this->provider, $this->username, $this->password, $this->port, $this->server, $this->ipAuth, $this->max, $this->short, $this->async, $this->checks, $this->hotbar, $this->passChange, $this->simplepassword, $this->email, $this->timeoutEnabled, $this->protectForce, $this->allowMoving, $this->allowCommand, $this->allowDrops, $this->allowPlace, $this->allowBreak, $this->allowPvP, $this->allowDamage, $this->allowShoot, $this->safemode, $this->debug, $this->logger, $this->api);
-    $this->saveDefaultConfig();
+  	if($this->debug){
+  		var_dump($this->mysettings);
+  	}
   	return true;
   }
 }
