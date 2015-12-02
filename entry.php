@@ -1,6 +1,10 @@
 <?php
+/*
+- xAuth updater script.
+- Codded by @PEMapModder.
+*/
 
-echo "=== xAuth Auto-Updater ---", PHP_EOL;
+echo "--- xAuth Auto-Updater ---", PHP_EOL;
 $version = yaml_parse_file("phar://" . __FILE__ . "/plugin.yml")["version"];
 echo "Current version: $version", PHP_EOL;
 echo "Checking for new versions from GitHub...", PHP_EOL;
