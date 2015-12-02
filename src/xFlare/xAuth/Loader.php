@@ -96,11 +96,6 @@ class Loader extends PluginBase implements Listener{
     if($this->maxaccounts !== false){
       $this->ips = new Config($this->getDataFolder() . "ips.txt", Config::ENUM, array());
     }
-    if($this->logger !== true && $this->debug !== false){
-      $this->getConfig()->set("log-xauth", true);
-      $this->getConfig()->save();
-      $errors++;
-    }
     if($this->debug === true || $this->logger === true){
         $this->getServer()->getLogger()->info("§7[§axAuth§7] §3Creating §dx§aAuth §3logger§7...");
         $this->xauthlogger = new Config($this->getDataFolder() . "xauthlogs.log", Config::ENUM, array());
