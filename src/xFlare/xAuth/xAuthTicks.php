@@ -64,10 +64,10 @@ class xAuthTicks extends PluginTask{
     	if($this->owner->status === "enabled"){
       		$prefix = "§7[§axAuth§7]";
     	}
-    	if($this->owner->status === "failed"){
+    	elseif($this->owner->status === "failed"){
       		$prefix = "§7[§cFailure§7]";
     	}
-    	if($this->owner->status === null){
+    	elseif($this->owner->status === null){
       		$prefix = "§7[§ePreloadError§7]";
     	}
     	$exception = "$prefix $message";
