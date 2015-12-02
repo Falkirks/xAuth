@@ -55,6 +55,7 @@ class LoginAndRegister implements Listener{
     	}
     }
     public function onJoin(PlayerJoinEvent $event){
+    	$myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($event->getPlayer()->getName() . ".yml"), Config::YAML);
     	if($this->plugin->status === "enabled"){
     		$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageJoin);
         	if($this->plugin->usernamestatus === true){
@@ -62,13 +63,12 @@ class LoginAndRegister implements Listener{
             		$event->getPlayer()->setNameTag("[Processing..] $name");
         	}
     		if($this->plugin->provider === "yml"){
-    			if($this->plugin->registered->exists(strtolower($event->getPlayer()->getName()))){
+    			if($myuser->get("registered") === true){
     				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageAlreadyRegistered);
     				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageLogin);
                 		$event->getPlayer()->setNameTag("[Not-Logged-In] $name");
 	    			$this->plugin->loginmanager[$event->getPlayer()->getId()] = 1;
 	    			if($this->plugin->ipAuth){
-	    				$myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($event->getPlayer()->getName() . ".yml"), Config::YAML);
 	    				if($myuser->get("ip") === $event->getPlayer()->getAddress()){
 	    					$this->plugin->loginmanager[$event->getPlayer()->getId()] = true;
                 				$this->plugin->chatprotection[$event->getPlayer()->getId()] = $myuser->get("password");
@@ -125,9 +125,8 @@ class LoginAndRegister implements Listener{
     		if(md5($message) === $this->plugin->chatprotection[$event->getPlayer()->getId()]){
     			$myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($event->getPlayer()->getName() . ".yml"), Config::YAML);
     			$myuser->set("password", $this->plugin->chatprotection[$event->getPlayer()->getId()]);
+    			$myuser->set("registered", true);
     			$myuser->save();
-                $this->plugin->registered->set(strtolower($event->getPlayer()->getName()));
-                $this->plugin->registered->save();
     			if($myuser->get("password") === md5($message)){
     				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageRegistered);
     				$this->plugin->loginmanager[$event->getPlayer()->getId()] = true;
@@ -147,7 +146,7 @@ class LoginAndRegister implements Listener{
     		$player->sendMessage($this->plugin->prefix . " " . $this->messageShort);
     		return;
     	}
-    	if(strlen($password) > $this->plugin->max){
+    	elseif(strlen($password) > $this->plugin->max){
     		$player->sendMessage($this->plugin->prefix . " " . $this->messageLong);
     		return;
     	}
@@ -163,6 +162,7 @@ class LoginAndRegister implements Listener{
     	$myuser->set("password", md5($password));
     	$myuser->set("ip", $player->getAddress());
     	$myuser->set("version", $this->plugin->version); //For combatability in later updates.
+    	$myuser->set("registered", true);
     	$myuser->save();
     	return md5($password);
     }
