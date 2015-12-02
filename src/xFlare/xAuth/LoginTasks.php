@@ -141,7 +141,7 @@ class LoginTasks implements Listener{
     	}
     }
     public function onFoodEat(PlayerItemConsumeEvent $event){
-        if($this->plugin->status === "enabled" && $this->plugin->loginmanager[$event->getEntity()->getId()] !== true){
+        if($this->plugin->status === "enabled" && $this->plugin->loginmanager[$event->getPlayer()->getId()] !== true){
             $event->setCancelled(true);
         }
         elseif($this->plugin->safemode === true and $this->plugin->status !== "enabled"){
