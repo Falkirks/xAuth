@@ -1,9 +1,9 @@
 <?php
 
-echo "=== XAUTH UPDATER ===", PHP_EOL;
+echo "=== xAuth Auto-Updater ---", PHP_EOL;
 $version = yaml_parse_file("phar://" . __FILE__ . "/plugin.yml")["version"];
 echo "Current version: $version", PHP_EOL;
-echo "Checking new versions from GitHub...", PHP_EOL;
+echo "Checking for new versions from GitHub...", PHP_EOL;
 $ret = curlGet("https://api.github.com/repos/xxFlare/xAuth/releases", 5);
 if(strlen((string) $ret) > 0){
 	$data = json_decode($ret);
