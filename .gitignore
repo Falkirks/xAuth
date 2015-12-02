@@ -1,6 +1,5 @@
 # Files that get generated.
 players/*
 config.yml
-registered.txt
 xauthlogger.log
 ips.txt
