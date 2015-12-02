@@ -166,4 +166,4 @@ close-session: true
 dump-logger: 1
 
 # For internal use only. Do NOT edit.
-version: "1.0.0 beta 7"
+version: "1.0.0 beta 8"
