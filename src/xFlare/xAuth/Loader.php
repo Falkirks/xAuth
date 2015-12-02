@@ -90,9 +90,6 @@ class Loader extends PluginBase implements Listener{
       $this->getConfig()->save();
       $errors++;
     }
-    if($this->provider === "yml"){
-      $this->registered = new Config($this->getDataFolder() . "registered.txt", Config::ENUM, array());
-    }
     if($this->maxaccounts !== false){
       $this->ips = new Config($this->getDataFolder() . "ips.txt", Config::ENUM, array());
     }
