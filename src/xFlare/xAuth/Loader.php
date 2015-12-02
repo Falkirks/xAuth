@@ -28,7 +28,7 @@ class Loader extends PluginBase implements Listener{
   private $mysettings = [];
   public function onEnable(){
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
-    $this->version = "1.0.0 beta 7";
+    $this->version = "1.0.0 beta 8";
     $this->codename = "xFlaze";
     $this->prefix = "§7[§dx§aAuth§7]";
     $this->loggercount = 0;
