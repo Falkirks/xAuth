@@ -147,7 +147,7 @@ enable-api: true
 # Debug-mode? Logs extra messages and helps find bugs.
 debug-mode: false
 
-# Creates a log file and logs console outputs. You cannot turn this off with debug.
+# Creates a log file and logs console outputs.
 log-xauth: true
 
 # Auto-Update xAuth? This is very useful for getting the latest patches instantly!
