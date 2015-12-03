@@ -27,10 +27,18 @@ class DataSpider implements Listener{
     	$this->sendSpiderToFolders
     }
   }
+  /*
+  - API Key:
+  - Spider deleted profile = true;
+  - Spider did not delete profile or player is online = false;
+  */
   private function sendSpiderToFolder(){ //Sends spiders to clean up stuff.
     $indexing = fgets(fopen($this->plugin->getDataFolder() . "index.txt", 'r'));
     $myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing . ".yml"), Config::YAML);
     # Check if registered.
+    if($this->getServer()->getPlayer($indexing) !== null){
+    	return false;
+    }
     if($myuser->get("registered") !== true){
     	unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing . ".yml"), Config::YAML));	
     	return true;
