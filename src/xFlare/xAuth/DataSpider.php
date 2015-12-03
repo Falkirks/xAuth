@@ -27,6 +27,11 @@ class DataSpider implements Listener{
     	$this->sendSpiderToFolders();
   }
   private function sendSpiderToFolder(){
-   
+    $indexing = //index.;
+    $myuser = //get indexed account.
+    if(){
+    	return true;
+    }
+    return false;
   }
 }
