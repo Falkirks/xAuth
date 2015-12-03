@@ -39,6 +39,7 @@ class DataSpider implements Listener{
     $date = $myuser->get("date");
     if($date > 0){
     	unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing->getName() . ".yml"), Config::YAML));
+    	$file = $this->plugin->getDataFolder() . "index.txt";
     	$file->remove($indexing);
     	$file->save();
     	array_push($this->plugin->mainlogger, "xAuthSpider> Deleted $indexing from players folder.");
