@@ -23,8 +23,8 @@ class DataSpider implements Listener{
         $this->plugin = $plugin;
   }
   public function createSpider(){
-    if($this->plugin->getConfig("maxaccounts")){ //Creates a spider.
-    	$this->sendSpiderToFolders
+    if($this->plugin->getConfig("auto-cleanup")){ //Creates a spider.
+    	$this->sendSpiderToFolders();
     }
   }
   /*
@@ -35,17 +35,17 @@ class DataSpider implements Listener{
   private function sendSpiderToFolder(){ //Sends spiders to clean up stuff.
     $indexing = fgets(fopen($this->plugin->getDataFolder() . "index.txt", 'r'));
     $myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing . ".yml"), Config::YAML);
+    $date = $myuser->get("date");
     # Check if registered.
     if($this->getServer()->getPlayer($indexing) !== null){
     	return false;
     }
-    if($myuser->get("registered") !== true){
+    elseif($myuser->get("registered") !== true){
     	unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing . ".yml"), Config::YAML));	
     	return true;
     }
     # Check date of registered (To delete)
-    $date = $myuser->get("date");
-    if($date > 0){
+    elseif($date > 0){
     	unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing->getName() . ".yml"), Config::YAML));
     	$file = $this->plugin->getDataFolder() . "index.txt";
     	$file->remove($indexing);
