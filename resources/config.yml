@@ -56,7 +56,7 @@ kick-after-invailds: 3
 # Max numbers of registered accounts allowed per IP?
 # Set to false if you want to allow unlimited accounts.
 # Not implemented.
-max-accounts: 5
+max-accounts: 2
 
 # Delete old accounts that have not been used for a while?
 # Not implemented.
@@ -88,7 +88,7 @@ allow-damage: false
 #------------[Auth Events]------------#
 
 
-#------------[General]------------#
+#------------[Join/Quit]------------#
 # Anounce player join? xAuth let's you choose whether you want "player has joined the server".
 player-join: false
 
@@ -97,7 +97,7 @@ player-quit: false
 
 # Show there auth status when not logged in? Username: "[Not-Logged-In] Steve"
 show-username-auth-status: true
-#------------[General]------------#
+#------------[Join/Quit]------------#
 
 #----------------[Messages]----------------#
 # Messages sent throughout the plugin, they are gray by default.
@@ -140,10 +140,6 @@ timeout: "You been un-authenticated for too long!"
 # Protects you against bad plugins that try to use the API for bad reasons.
 safe-mode: true
 
-# API allows other plugins to access xAuth's data with ease, enabling it will register the API class.
-# Safe-Mode is best with this option.
-enable-api: true
-
 # Debug-mode? Logs extra messages and helps find bugs.
 debug-mode: false
 
@@ -158,6 +154,11 @@ auto-update-xauth: true
 
 # Change tick rate. 
 tick-rate: 20
+
+# API allows other plugins to access xAuth's data with ease, enabling it will register the API class.
+# Safe-Mode is best with this option.
+# Don't disable it if you have no idea what is is.
+enable-api: true
 
 # Don't close session? May cause memory leaks!
 close-session: true
