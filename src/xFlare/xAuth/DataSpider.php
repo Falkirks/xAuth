@@ -27,11 +27,12 @@ class DataSpider implements Listener{
     	$this->sendSpiderToFolders();
   }
   private function sendSpiderToFolder(){
-    $indexing = //index.;
-    $myuser = //get indexed account.
-    if(){
-    	return true;
+    $indexing = fgets(fopen($this->getDataFolder() . "index.txt", 'r'));
+    $spider = $this->getServer()->getPlayer($indexing);
+    if(file_exists(new Config($this->plugin->getDataFolder() . "players/" . strtolower($spider . ".yml"), Config::YAML))){
+    	$myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($event->getPlayer()->getName() . ".yml"), Config::YAML);
+    	$date = $myuser->get("date");
+    if($date > 0)
     }
-    return false;
   }
 }
