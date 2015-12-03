@@ -15,8 +15,8 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\Server;
 /*
-- Spiders! What's this class you may ask? Spiders
-= Creep and crawl your player folder to auto delete old player profiles if enabled.
+- Spiders! What's this class you may ask? Spiders creep and crawl into
+- your player folder to auto-delete old player profiles if enabled.
 */
 class DataSpider implements Listener{
 	public function __construct(Loader $plugin){
