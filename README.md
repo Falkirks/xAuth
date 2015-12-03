@@ -3,6 +3,9 @@ xAuth allows you to control your own servers authentication. xAuth gives you ton
 
 ## xAuth advantages over SimpleAuth:
 - xAuth protects users more and stops some events that SimpleAuth does not.
+- xAuth can auto-clean up player files if enabled.
+- xAuth has a useful logger.
+- xAuth has an awesome API for implementing your current plugins into.
 - xAuth does not let people share passwords.
 - xAuth allows you to block simple passwords.
 - xAuth does not have permission bugs.
