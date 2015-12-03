@@ -23,6 +23,10 @@ class DataSpider implements Listener{
         $this->plugin = $plugin;
   }
   public function createSpider(){
-    //
+    if($this->plugin->getConfig("maxaccounts")){ //Creates a spider.
+    	$this->sendSpiderToFolders();
+  }
+  private function sendSpiderToFolder(){
+   
   }
 }
