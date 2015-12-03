@@ -24,31 +24,26 @@ class DataSpider implements Listener{
   }
   public function createSpider(){
     if($this->plugin->getConfig("maxaccounts")){ //Creates a spider.
-    //	$this->sendSpiderToFolders
+    	$this->sendSpiderToFolders
     }
   }
   private function sendSpiderToFolder(){ //Sends spiders to clean up stuff.
-    $file = $this->plugin->getDataFolder() . "index.txt";
     $indexing = fgets(fopen($this->plugin->getDataFolder() . "index.txt", 'r'));
     $myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing . ".yml"), Config::YAML);
     # Check if registered.
-    if($this->getServer()->getPlayer($indexing) !== null){
-    	$spider = $this->getServer()->getPlayer($indexing);
-    }
-    else{
-    	if($myuser->get("registered") !== true){
-    		unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing . ".yml"), Config::YAML));	
-    	}
+    if($myuser->get("registered") !== true){
+    	unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing . ".yml"), Config::YAML));	
     	return true;
     }
     # Check date of registered (To delete)
     $date = $myuser->get("date");
     if($date > 0){
-    	unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($spider->getName() . ".yml"), Config::YAML));
-    	$file->remove($spider->getName());
+    	unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($indexing->getName() . ".yml"), Config::YAML));
+    	$file->remove($indexing);
     	$file->save();
     	array_push($this->plugin->mainlogger, "xAuthSpider> Deleted $indexing from players folder.");
     	return true;
     }
+    return false;
   }
 }
