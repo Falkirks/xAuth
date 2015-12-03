@@ -24,15 +24,25 @@ class DataSpider implements Listener{
   }
   public function createSpider(){
     if($this->plugin->getConfig("maxaccounts")){ //Creates a spider.
-    	$this->sendSpiderToFolders();
+    //	$this->sendSpiderToFolders();
   }
-  private function sendSpiderToFolder(){
-    $indexing = fgets(fopen($this->getDataFolder() . "index.txt", 'r'));
+  private function sendSpiderToFolder(){ //Sends spiders to clean up stuff.
+    $file = $this->plugin->getDataFolder() . "index.txt";
+    $indexing = fgets(fopen($this->plugin->getDataFolder() . "index.txt", 'r'));
     $spider = $this->getServer()->getPlayer($indexing);
-    if(file_exists(new Config($this->plugin->getDataFolder() . "players/" . strtolower($spider . ".yml"), Config::YAML))){
+    if(file_exists(new Config($this->plugin->getDataFolder() . "players/" . strtolower($spider->getName() . ".yml"), Config::YAML))){
     	$myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($event->getPlayer()->getName() . ".yml"), Config::YAML);
     	$date = $myuser->get("date");
-    if($date > 0)
+    	if($date > 0){
+    		unlink(new Config($this->plugin->getDataFolder() . "players/" . strtolower($spider->getName() . ".yml"), Config::YAML));
+    		$file->remove($spider->getName());
+    		$file->save();
+    		if($this->owner->debug){
+    			array_push($this->owner->mainlogger, "Spider> Deleted $indexing from players folder.");
+    		}
+    		return true;
+    	}
+    	return false;
     }
   }
 }
