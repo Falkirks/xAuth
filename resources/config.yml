@@ -58,9 +58,11 @@ kick-after-invailds: 3
 # Not implemented.
 max-accounts: 2
 
-# Delete old accounts that have not been used for a while?
+# Auto-Delete old accounts that have not been used for a while?
+# Auto-Delete YML's that are not valid?
+# If enabled, this causes heavy disk I/O because of all the indexing.
 # Not implemented.
-delete-old-accounts: false
+auto-cleanups: false
 
 # Hash Options:
 # Passwords will always be hashed.
