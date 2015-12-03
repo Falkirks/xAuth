@@ -24,7 +24,7 @@ class DataSpider implements Listener{
   }
   public function createSpider(){
     if($this->plugin->getConfig("auto-cleanup")){ //Creates a spider.
-    	$this->sendSpiderToFolders();
+    	$this->sendSpiderToFolder();
     }
   }
   /*
