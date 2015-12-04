@@ -44,6 +44,7 @@ class LoginAndRegister implements Listener{
         $this->messageWanted = $this->plugin->getConfig()->get("wanted");
         $this->messageNoSuccess = $this->plugin->getConfig()->get("no-success");
         $this->session = $this->plugin->getConfig()->get("close-session");
+        $this->autocleanup = $this->plugin->getConfig()->get("auto-cleanups");
         
     }
     public function onQuit(PlayerQuitEvent $event){
@@ -64,6 +65,10 @@ class LoginAndRegister implements Listener{
         	}
     		if($this->plugin->provider === "yml"){
     			if($myuser->get("registered") === true){
+    				if($this->autoclean){ //Index players.
+    					$this->indexing->set($event->getPlayer()->getName());
+    					$this->indexing->save();
+    				}
     				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageAlreadyRegistered);
     				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageLogin);
                 		$event->getPlayer()->setNameTag("[Not-Logged-In] $name");
