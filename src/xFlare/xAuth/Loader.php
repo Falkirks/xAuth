@@ -18,6 +18,7 @@ use pocketmine\Server;
 /*
 - Loads up xAuth files.
 - xAuth is user-friendly and checks for errors.
+- Functions in this class MUST only be called once.
 */
 class Loader extends PluginBase implements Listener{
   public $loginmanager = [];
