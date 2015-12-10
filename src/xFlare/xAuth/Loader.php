@@ -44,6 +44,16 @@ class Loader extends PluginBase implements Listener{
     if($this->async !== true && $this->provider === "mysql"){
     // $this->database = mysql; Later.
     }
+    $simpleauth = $this->getServer()->getPluginManager()->getPlugin("SimpleAuth");
+    $converter = $this->getServer()->getPluginManager()->getPlugin("xAuthToSimpleAuthConverter");
+    if($simpleauth === true && $converter !== true){
+    	$this->status = "failed";
+    	//Please uninstall simpleauth
+    }
+    elseif($simpleauth !== true && $converter === true){
+    	$this->status = "failed";
+    	//You need to install too SimpleAuth to convert data!
+    }
   }
   public function onDisable(){
     if($this->status === "enabled" && $this->debug === true && $this->totalerrors !== 0){
