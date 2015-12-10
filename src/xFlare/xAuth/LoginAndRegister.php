@@ -169,6 +169,8 @@ class LoginAndRegister implements Listener{
     	$myuser->set("version", $this->plugin->version); //For combatability in later updates.
     	$myuser->set("registered", true);
     	$myuser->set("date", time());
+    	$this->plugin->ips->set(strtolower($player->getName()));
+    	$this->plugin->ips->save();
     	$myuser->save();
     	return md5($password);
     }
