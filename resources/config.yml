@@ -16,7 +16,6 @@ server: ""
 ip-auth: false
 
 # Prefix? Don't add the brackets. Ex: xAuth will show up as -> [xAuth]
-# Not implemented.
 prefix: xAuth
 
 # How many characters must a password be?
