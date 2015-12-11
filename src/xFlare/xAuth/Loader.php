@@ -29,7 +29,7 @@ class Loader extends PluginBase implements Listener{
   private $mysettings = [];
   public function onEnable(){
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
-    $this->version = "1.0.0 beta 8";
+    $this->version = "1.0.1 beta 9";
     $this->codename = "xFlaze";
     $this->prefix = "§7[" . $this->getConfig()->get("prefix") . "§7]";
     $this->loggercount = 0;
@@ -68,15 +68,20 @@ class Loader extends PluginBase implements Listener{
     	$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Upgrading config§7...");
     	if($this->configUpdate() === true){
     		unlink($this->getDataFolder() . "config.yml");
-    		if(!file_exists($this->getDataFolder() . "config.yml")){
-    			$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Config updated§7. Reloading config and data.");
-    			$this->checkForConfigErrors();
-    			return true;
-    		}
-    		else{
-    			$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Config update failed§7!\nPlease delete your old config.");
-    		}
+    		//if(!file_exists($this->getDataFolder() . "config.yml")){
+    		$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Config updated§7. Reloading config and data.");
+    		//$this->getConfig()->set("version", $this->version);
+    		//$this->getConfig()->save();
+    		//$this->checkForConfigErrors();
+    		$this->getServer()->shutdown();
+    		return true;
     	}
+    }
+    if(!file_exists($this->getDataFolder() . "config.yml")){
+    	$errors++;
+    	$this->status = "failed";
+    	//No config found!
+    	return;
     }
     if($this->provider === "mysql" && $this->provider !== "yml"){
       $this->getServer()->getLogger()->info("§7[§axAuth§7] §3MySQL support is not implemented yet, invaild §ax§dAuth §3provider§7!\nSwitching too YML.");
