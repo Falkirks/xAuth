@@ -48,11 +48,11 @@ class Loader extends PluginBase implements Listener{
     $converter = $this->getServer()->getPluginManager()->getPlugin("xAuthToSimpleAuthConverter");
     if($simpleauth === true && $converter !== true){
     	$this->status = "failed";
-    	//Please uninstall simpleauth
+    	$this->getServer()->getLogger()->info("§cPlease remove SimpleAuth to use xAuth§7...");
     }
     elseif($simpleauth !== true && $converter === true){
     	$this->status = "failed";
-    	//You need to install too SimpleAuth to convert data!
+    	$this->getServer()->getLogger()->info("§cTo convert data from MySQL..Please install SimpleAuth§7...");
     }
   }
   public function onDisable(){
@@ -69,17 +69,20 @@ class Loader extends PluginBase implements Listener{
     	if($this->configUpdate() === true){
     		unlink($this->getDataFolder() . "config.yml");
     		if(!file_exists($this->getDataFolder() . "config.yml")){
-    			$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Config updated§7.");
-    			$this->getServer()->shutdown();
+    			$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Config updated§7. Reloading config and data.");
+    			$this->checkForConfigErrors();
+    			return true;
     		}
     		else{
-    			$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Config update failed§7!");
+    			$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Config update failed§7!\nPlease delete your old config.");
     		}
     	}
     }
     if($this->provider === "mysql" && $this->provider !== "yml"){
-      $this->getServer()->getLogger()->info("§7[§cError§7] §3MySQL support is not implemented yet, invaild §ax§dAuth §3provider§7!\nSwitching too YML.");
+      $this->getServer()->getLogger()->info("§7[§axAuth§7] §3MySQL support is not implemented yet, invaild §ax§dAuth §3provider§7!\nSwitching too YML.");
       $this->provider = "yml";
+      $errors++;
+      $this->registerConfigOptions(); //Re-do data that may be damaged.
     }
     if(!file_exists($this->getDataFolder() . "players/") && $this->provider === "yml"){
         $this->getServer()->getLogger()->info("§7[§axAuth§7] §eCreating players folder for provider§7...");
@@ -91,12 +94,14 @@ class Loader extends PluginBase implements Listener{
       $this->status = "failed";
       $this->getServer()->shutdown();
     }
-    if($this->max < 0 or $this->short < 0){
+    if($this->max < 1 || $this-> short< 1){
+      $this->getServer()->getLogger()->info("§cYou cannot to have a max or short value less than 1§7!");
       $this->max = 15;
       $this->short = 6;
       $errors++;
     }
     if($this->getConfig()->get("database-checks") === true && $this->provider !== "mysql"){
+      $this->getServer()->getLogger()->info("§cYou cannot to database checks with YML§7!");
       $this->getConfig()->set("data-checks", false);
       $this->getConfig()->save();
       $errors++;
@@ -108,19 +113,8 @@ class Loader extends PluginBase implements Listener{
         $this->getServer()->getLogger()->info("§7[§axAuth§7] §3Creating §dx§aAuth §3logger§7...");
         $this->xauthlogger = new Config($this->getDataFolder() . "xauthlogs.log", Config::ENUM, array());
     }
-    if($this->async !== true && $this->async !== false){
-      $errors++;
-      $this->getConfig()->set("use-async", false);
-      $this->getConfig()->save();
-      $this->async = false;
-    }
-    if($this->provider !== "yml" && $this->getConfig()->get("check-yml") === true){
-    	$this->checkYML = false;
-    	$this->getConfig()->set("check-yml", false);
-    	$this->getConfig()->save();
-    	$errors++;
-    }
     if($this->getConfig()->get("dump-logger") < 1){
+    	$this->getServer()->getLogger()->info("§cDump logger setting must be greater than 1§7!");
       $this->getConfig()->set("dump-logger", 1);
       $this->getConfig()->save();
       $errors++;
@@ -179,9 +173,8 @@ class Loader extends PluginBase implements Listener{
     $this->email = $this->getConfig()->get("require-email");
     $this->join = $this->getConfig()->get("player-join");
     $this->quit = $this->getConfig()->get("player-quit");
-    $this->import = $this->getConfig()->get("import-from-simpleauth");
+   // $this->import = $this->getConfig()->get("import-from-simpleauth");
     $this->maxaccounts = $this->getConfig()->get("max-accounts");
-    $this->checkYML = $this->getConfig()->get("check-yml");
     $this->allowPickup = $this->getConfig()->get("allow-item-pickup");
     $this->passBlock = $this->getConfig()->get("block-saying-pass-in-chat");
     if($this->timeoutEnabled){
@@ -194,17 +187,14 @@ class Loader extends PluginBase implements Listener{
       $this->getServer()->getLogger()->info("§7[§axAuth§7] §3Logger is enabled.");
     }
     if($this->debug){
-      $this->getServer()->getLogger()->info("§7[§axAuth-Debug§7] §3Config options have been registered.");
+      $this->getServer()->getLogger()->info("§7[§axAuth§7] §3Config options have been registered.");
     }
-    if($this->import){
-    //	$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Import enabled, SimpleAuth data will be used now."); Not implemnted.
-    }
+ //   if($this->import){
+ //   	$this->getServer()->getLogger()->info("§7[§axAuth§7] §3Import enabled, SimpleAuth data will be used now."); Not implemnted.
+ //   }
   }
-  private function configUpdate(){
+  private function configUpdate(){ //TODO.
   	array_push($this->mysettings, $this->provider, $this->username, $this->password, $this->port, $this->server, $this->ipAuth, $this->max, $this->short, $this->async, $this->checks, $this->hotbar, $this->passChange, $this->simplepassword, $this->email, $this->timeoutEnabled, $this->protectForce, $this->allowMoving, $this->allowCommand, $this->allowDrops, $this->allowPlace, $this->allowBreak, $this->allowPvP, $this->allowDamage, $this->allowShoot, $this->safemode, $this->debug, $this->logger, $this->api);
-  	if($this->debug){
-  		var_dump($this->mysettings);
-  	}
   	return true;
   }
 }
