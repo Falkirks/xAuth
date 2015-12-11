@@ -61,21 +61,11 @@ kick-after-invailds: 3
 # Not implemented.
 max-accounts: 2
 
-# Auto-Delete old accounts that have not been used for a while?
-# Auto-Delete YML's that are not valid?
-# If enabled, this causes heavy disk I/O because of all the indexing.
-# Not implemented.
-auto-cleanups: false
-
 # Hash Options:
 # Passwords will always be hashed.
 # Not implemented
 hash-ips: false
 hash-usernames: false
-
-# Check if YML is currpted when players leave the game?
-check-yml: true
-
 #------------[Authenticatin Settings]------------#
 
 
@@ -157,6 +147,11 @@ auto-update-xauth: true
 #-------- Danger Zone! --------#
 # Dangerous experimental setting that should not be edited!
 
+# Auto-Delete old accounts that have not been used for a while?
+# Auto-Delete YML's that are not valid?
+# If enabled, this may cause heavy disk I/O because of all the indexing.
+auto-cleanups: false
+
 # Change tick rate. 
 tick-rate: 20
 
@@ -172,4 +167,4 @@ close-session: true
 dump-logger: 1
 
 # For internal use only. Do NOT edit.
-version: "1.0.0 beta 8"
+version: "1.0.1 beta 9"
