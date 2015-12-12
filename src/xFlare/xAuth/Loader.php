@@ -141,7 +141,7 @@ class Loader extends PluginBase implements Listener{
   public function registerClasses(){
     $this->getServer()->getPluginManager()->registerEvents(new LoginTasks($this), $this);
     $this->getServer()->getPluginManager()->registerEvents(new LoginAndRegister($this), $this);
-    $this->getServer()->getPluginManager()->registerEvents(new CommandManager($this), $this);
+    $this->getServer()->getCommandMap()->register("loader", new CommandManager($this));
     $this->getServer()->getScheduler()->scheduleRepeatingTask(new xAuthTicks($this), $this->getConfig()->get("tick-rate"));
     if($this->api){
       $this->getServer()->getPluginManager()->registerEvents(new API($this), $this);
