@@ -45,6 +45,9 @@ class LoginAndRegister implements Listener{
         $this->messageNoSuccess = $this->plugin->getConfig()->get("no-success");
         $this->session = $this->plugin->getConfig()->get("close-session");
         $this->autocleanup = $this->plugin->getConfig()->get("auto-cleanups");
+        $this->typeEmail = $this->plugin->getConfig()->get("type-email");
+        $this->doneEmail = $this->plugin->getConfig()->get("email-done");
+        $this->failEmail = $this->plugin->getConfig()->get("email-fail");
         
     }
     public function onQuit(PlayerQuitEvent $event){
@@ -69,8 +72,6 @@ class LoginAndRegister implements Listener{
     					$this->indexing->set($event->getPlayer()->getName());
     					$this->indexing->save();
     				}
-    				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageAlreadyRegistered);
-    				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageLogin);
                 		$event->getPlayer()->setNameTag("[Not-Logged-In] $name");
 	    			$this->plugin->loginmanager[$event->getPlayer()->getId()] = 1;
 	    			if($this->plugin->ipAuth){
@@ -82,6 +83,11 @@ class LoginAndRegister implements Listener{
                     				return;
 	    				}
 	    			}
+	    			if($this->email){
+    					$this->getPlayer()->sendMessage($this->typeEmail);
+    				}
+	    			$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageAlreadyRegistered);
+    				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageLogin);
     			}
     			else{
     				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageRegisterPlease);
@@ -100,6 +106,16 @@ class LoginAndRegister implements Listener{
     	if($this->plugin->loginmanager[$event->getPlayer()->getId()] === 1){
     		if($this->plugin->provider === "yml"){
     			$myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($event->getPlayer()->getName() . ".yml"), Config::YAML);
+    			if($myuser->get("email") === null && $this->email && $this->isRealEmail($event->getMessage())){
+    				$myuser->set("email", $event->getMessage());
+    				$myuser->save();
+    				$event->getPlayer()->sendMessage($this->doneEmail);
+    				return;
+    			}
+    			else{
+    				$event->getPlayer()->sendMessage($this->failEmail);
+    				return;
+    			}
     			if(md5($message) === $myuser->get("password")){
     				$this->plugin->loginmanager[$event->getPlayer()->getId()] = true;
                 		$this->plugin->chatprotection[$event->getPlayer()->getId()] = md5($message);
@@ -169,15 +185,13 @@ class LoginAndRegister implements Listener{
     	$myuser->set("version", $this->plugin->version); //For combatability in later updates.
     	$myuser->set("registered", true);
     	$myuser->set("date", time());
+    	$myuser->set("email", null);
     	$this->plugin->ips->set(strtolower($player->getName()));
     	$this->plugin->ips->save();
     	$myuser->save();
     	return md5($password);
     }
     public function clearSession($player){
-    	/*
-    	- This function protects memory leaks, use it when a player leaves the game.
-    	*/
     	if($this->session){
     		unset($this->plugin->loginmanager[$player->getId()]);
     		unset($this->plugin->kicklogger[$player->getId()]);
@@ -204,12 +218,12 @@ class LoginAndRegister implements Listener{
     		}
     	}
     }
-    private function realEmail($email){ //Tries it's best to make sure email is real.
-    	if(stristr($email, '@') && stristr($email, '.com') || stristr($email, '.net') || stristr($email, '.co') || stristr($email, '.tk')){
-    		return true;
+    private function isRealEmail($email){ //Tries it's best to make sure email is real.
+    	if(stristr($email, '@') && stristr($email, '.com') || stristr($email, '.net') || stristr($email, '.co') || stristr($email, '.tk') || stristr($email, 'me')){
+    		if(strlen($email) > 4){
+    			return true;
+    		}
     	}
-    	else{
-    		return false;
-    	}
+    	return false;
     }
 }
