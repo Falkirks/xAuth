@@ -116,6 +116,11 @@ wanted: "Type your wanted password in chat."
 sharing: "Do not share your password!"
 ipauthed: "You have been ip-authed."
 
+# Email messages.
+type-email: "First, Please type your wanted email."
+email-done: "Thanks! Please type your wanted password."
+email-fail: "Oops. That email was not valid. Try again."
+
 # Hotbar messages if enabled.
 hotbar-login: "Please login to play!"
 hotbar-register: "Please register to play!"
