@@ -33,7 +33,6 @@ class Loader extends PluginBase implements Listener{
     $this->codename = "xFlaze";
     $this->prefix = "§7[" . $this->getConfig()->get("prefix") . "§7]";
     $this->loggercount = 0;
-    $this->lastlog = null;
     $this->getServer()->getLogger()->info("§dx§aAuth §3by §axFlare §3is starting up§7...");
     $this->saveDefaultConfig();
     $this->provider = strtolower($this->getConfig()->get("autentication-type"));
