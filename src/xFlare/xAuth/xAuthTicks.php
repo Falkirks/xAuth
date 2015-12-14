@@ -25,24 +25,18 @@ class xAuthTicks extends PluginTask{
         $this->timeout = $this->owner->prefix . " " . $this->owner->getConfig()->get("timeout");
     }
     public function onRun($currentTick){
-    	# Hot bar messages.
-        if($this->owner->hotbar){
-            foreach($this->owner->getServer()->getOnlinePlayers() as $p){
-                if($this->owner->safemode === true && $this->owner->status !== "enabled"){
-                  $p->sendTip($this->disable);
-                }
-                elseif(isset($this->owner->loginmanager[$p->getId()]) && $this->owner->loginmanager[$p->getId()] === 1){
-                   $p->sendTip($this->loginhotbar);
-                }
-                elseif(isset($this->owner->loginmanager[$p->getId()]) && $this->owner->loginmanager[$p->getId()] === 0){
-                   $p->sendTip($this->registerhotbar);
-                }
+    	# Timeout & hotbar message.
+        foreach($this->owner->getServer()->getOnlinePlayers() as $p){
+        	if($this->owner->hotbar){
+                	if(isset($this->owner->loginmanager[$p->getId()]) && $this->owner->loginmanager[$p->getId()] === 1){
+                   		$p->sendTip($this->loginhotbar);
+                	}
+                	elseif(isset($this->owner->loginmanager[$p->getId()]) && $this->owner->loginmanager[$p->getId()] === 0){
+                   		$p->sendTip($this->registerhotbar);
+                	}
             }
-        }
-    	# Timeout.
-    	if($this->owner->timeoutEnabled){
-    		foreach($this->owner->getServer()->getOnlinePlayers() as $p){
-    			if(isset($this->plugin->loginmanager[$p->getId()]) && $this->owner->loginmanager[$p->getId()] !== true){
+            if($this->owner->timeoutEnabled){
+            	if(isset($this->plugin->loginmanager[$p->getId()]) && $this->owner->loginmanager[$p->getId()] !== true){
     				if(!isset($this->playerticks[$p->getId()])){
     					$this->owner->playerticks[$p->getId()] = 0;
     				}
@@ -53,8 +47,7 @@ class xAuthTicks extends PluginTask{
     				}
     				$this->owner->playerticks[$p->getId()] = $myticks;
     			}
-    		}
-    	}
+        }
     	# Logger.
     	if(!isset($this->owner->mainlogger[$this->owner->loggercount])){
     		return;
@@ -73,13 +66,12 @@ class xAuthTicks extends PluginTask{
     	$exception = "$prefix $message";
 	    $this->owner->getServer()->getLogger()->info($exception);
 	    if($this->owner->logger){
-		  $file = $this->plugin->getDataFolder() . "xauthlogs.log";
+		    $file = $this->plugin->getDataFolder() . "xauthlogs.log";
     	  	file_put_contents($file, $exception);
 	    }
 	    if($this->owner->loggercount > $this->owner->getConfig()->get("dump-logger")){ //Dump logger cache.
 		  $this->owner->mainlogger = [];
 		  $this->owner->loggercount = 0;
 	    }  
-	    $this->owner->lastlog = $exception;
     }
 }
