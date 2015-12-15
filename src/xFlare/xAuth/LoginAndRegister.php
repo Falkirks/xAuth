@@ -59,7 +59,6 @@ class LoginAndRegister implements Listener{
     	}
     }
     public function onJoin(PlayerJoinEvent $event){
-    	$myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($event->getPlayer()->getName() . ".yml"), Config::YAML);
     	if($this->plugin->status === "enabled"){
     		$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageJoin);
         	if($this->plugin->usernamestatus === true){
@@ -67,20 +66,19 @@ class LoginAndRegister implements Listener{
             		$event->getPlayer()->setNameTag("[Processing..] $name");
         	}
     		if($this->plugin->provider === "yml"){
+    			$myuser = new Config($this->plugin->getDataFolder() . "players/" . strtolower($event->getPlayer()->getName() . ".yml"), Config::YAML);
     			if($myuser->get("registered") === true){
-    				if($this->autoclean){ //Index players.
+    				if($this->autoclean){
     					$this->indexing->set($event->getPlayer()->getName());
     					$this->indexing->save();
     				}
-                		$event->getPlayer()->setNameTag("[Not-Logged-In] $name");
+                	$event->getPlayer()->setNameTag("[Not-Logged-In] $name");
 	    			$this->plugin->loginmanager[$event->getPlayer()->getId()] = 1;
 	    			if($this->plugin->ipAuth){
 	    				if($myuser->get("ip") === $event->getPlayer()->getAddress()){
-	    					$this->plugin->loginmanager[$event->getPlayer()->getId()] = true;
-                				$this->plugin->chatprotection[$event->getPlayer()->getId()] = $myuser->get("password");
-                    				$event->getPlayer()->setNameTag($event->getPlayer());
-                    				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageIP);
-                    				return;
+	    					$this->loginPlayer($player, $myuser)
+                    		$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageIP);
+                    		return;
 	    				}
 	    			}
 	    			if($this->email){
@@ -91,15 +89,20 @@ class LoginAndRegister implements Listener{
     			}
     			else{
     				$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageRegisterPlease);
-                		$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageWanted);
-                		$event->getPlayer()->setNameTag("[Not-Registered] $name");
+                	$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageWanted);
+                	$event->getPlayer()->setNameTag("[Not-Registered] $name");
     				$this->plugin->loginmanager[$event->getPlayer()->getId()] = 0;
     			}
     		}
     		if($this->plugin->provider === "mysql"){
-    			
+    			//MYsql
     		}
     	}
+    }
+    public function loginPlayer($player, $myuser){
+    	$this->plugin->loginmanager[$player->getId()] = true;
+        $this->plugin->chatprotection[$player->getId()] = md5($myuser->get("password"));
+        $event->getPlayer()->setNameTag($player);
     }
     public function onChat(PlayerChatEvent $event){
     	$message = $event->getMessage();
