@@ -53,11 +53,6 @@ class LoginAndRegister implements Listener{
     public function onQuit(PlayerQuitEvent $event){
     	$this->clearSession($event->getPlayer());
     }
-    public function onKick(PlayerKickEvent $event){
-    	if($event->getPlayer() === null){ //If a plugin stoped this event like VIPSlots.
-    		$this->clearSession($event->getPlayer());
-    	}
-    }
     public function onJoin(PlayerJoinEvent $event){
     	if($this->plugin->status === "enabled"){
     		$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageJoin);
