@@ -120,9 +120,7 @@ class LoginAndRegister implements Listener{
     				return;
     			}
     			if(md5($message) === $myuser->get("password")){
-    				$this->plugin->loginmanager[$event->getPlayer()->getId()] = true;
-                		$this->plugin->chatprotection[$event->getPlayer()->getId()] = md5($message);
-                    		$event->getPlayer()->setNameTag($event->getPlayer());
+    				$this->loginPlayer($event->getPlayer(), $myuser);
                     		if($myuser->get("ip") !== $event->getPlayer()->getAddress()){ //Ip updates.
                     			$myuser->set("ip", $event->getPlayer()->getAddress());
                     			$myuser->save();
