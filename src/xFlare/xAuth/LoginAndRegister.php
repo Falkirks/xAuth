@@ -172,8 +172,8 @@ class LoginAndRegister implements Listener{
     		$player->sendMessage($this->plugin->prefix . " " . $this->messageLong);
     		return;
     	}
-    	$simplepass = strtolower($password);
     	if($this->plugin->simplepassword === true && $this->plugin->status === "enabled"){
+    		$simplepass = strtolower($password);
     		if($simplepass === 123456789 || $simplepass === 987654321 || $simplepass === "asdfg" || $simplepass === "password" || preg_match('/[A-Za-z]/', $simplepass) && preg_match('/[0-9]/', $simplepass)){
     			$player->sendMessage($this->plugin->prefix . " " . $this->messageSimple);
     			unset($this->plugin->chatprotection[$player->getId()]);
