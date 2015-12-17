@@ -71,7 +71,7 @@ class LoginAndRegister implements Listener{
 	    			$this->plugin->loginmanager[$event->getPlayer()->getId()] = 1;
 	    			if($this->plugin->ipAuth){
 	    				if($myuser->get("ip") === $event->getPlayer()->getAddress()){
-	    					$this->loginPlayer($player, $myuser)
+	    					$this->loginPlayer($player, $myuser);
                     		$event->getPlayer()->sendMessage($this->plugin->prefix . " " . $this->messageIP);
                     		return;
 	    				}
