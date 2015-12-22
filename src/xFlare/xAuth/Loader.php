@@ -31,7 +31,12 @@ class Loader extends PluginBase implements Listener{
     $this->getServer()->getPluginManager()->registerEvents($this, $this);
     $this->version = "1.0.1 beta 9";
     $this->codename = "xFlaze";
-    $this->prefix = "§7[" . $this->getConfig()->get("prefix") . "§7]";
+    if($this->getConfig()->get("enable-prefix")){
+    	$this->prefix = "§7[" . $this->getConfig()->get("prefix") . "§7]";
+    }
+    else{
+    	$this->prefix = "§7";
+    }
     $this->loggercount = 0;
     $this->getServer()->getLogger()->info("§dx§aAuth §3by §axFlare §3is starting up§7...");
     $this->saveDefaultConfig();
